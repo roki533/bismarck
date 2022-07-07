@@ -1,0 +1,5 @@
+/__pycashe__/
+/venv/
+/migrations/
+
+/local.sqlite
