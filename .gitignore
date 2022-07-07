@@ -1,5 +1,5 @@
-/__pycashe__/
+/__pycache__/
 /venv/
 /migrations/
-
 /local.sqlite
+

@@ -92,8 +92,11 @@ def predict():
 
     df_pred_result = api_predict(machine_id, currency, pred_start, pred_end)#
 
+    print(df_pred_result.to_json(orient='records'))
     print(df_pred_result.to_json(orient='values'))
+    #print(json.loads(df_pred_result.to_json(orient='values')))
 
-    return jsonify(json.loads(df_pred_result.to_json(orient='values'))), 201
+    #return jsonify(json.loads(df_pred_result.to_json(orient='values'))), 201
+    return jsonify(df_pred_result.to_json(orient='values')), 201
     #return jsonify(df_pred_result.to_json()), 201
     #return jsonify(json.loads(df_pred_result.to_json())), 201
