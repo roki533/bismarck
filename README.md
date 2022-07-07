@@ -1,19 +1,25 @@
 # bismarck
 
-環境
+## 環境
 Python 3.8.8rc1
 
-インストール方法
+## インストール方法
 
+- このGit リポジトリから[Code]-[Download ZIP]でソースコードをダウンロードする。
+- ZIPファイルを解凍して、適当な場所にコピーする。
+- Pythonをインストールする
+　最初の画面下部のapp Python ... PATHにはチェックを入れる。Install Nowを選ぶ。
 - PowerShellを管理者権限で起動
 - PowerShell Set-ExecutionPolicy RemoteSigned CurrentUser を実行
-- bismarckディレクトリに移動
+- 回答したファイルのbismarckディレクトリにcdで移動
 - 仮想環境を構築
-　py -m venv venv
+　py -m venv venv を実行して、Pythonの仮想環境を作る
 - 仮想環境を実行
-  venv\Scripts\Activate.ps1
+  venv\Scripts\Activate.ps1　を実行する
+  プロンプトの先頭に(venv) PS が追加される
 - パッケージのインストール
-　pip install -r requirements.txx
+　pip install -r requirements.txt
+  少し時間がかかる
 - DBの構築
   flask db init
   migrationsディレクトリが作成される
@@ -33,10 +39,13 @@ API実行
 　https://chrome.google.com/webstore/detail/talend-api-tester-free-ed/aejoelaoggembcahagimdiliamlcdmfm?hl=ja
 
 - upload
-  http://127.0.0.1:5000/api/upload
+METHOD : GET
+SCHEME : http://127.0.0.1:5000/api/upload
   
 - train
-POST : http://127.0.0.1:5000/api/train
+METHOD : POST
+SCHEME : http://127.0.0.1:5000/api/train
+BODY   :
 {
   "machine_id":"Hiro",
   "currency":"50K", 
@@ -47,7 +56,9 @@ POST : http://127.0.0.1:5000/api/train
 }
 
 - predict
-POST : http://127.0.0.1:5000/api/predict
+METHOD : POST
+SCHEME : http://127.0.0.1:5000/api/predict
+BODY   :
 {
   "machine_id":"Hiro",
   "currency":"50K", 
