@@ -97,6 +97,6 @@ def predict():
     #print(json.loads(df_pred_result.to_json(orient='values')))
 
     #return jsonify(json.loads(df_pred_result.to_json(orient='values'))), 201
-    return jsonify(df_pred_result.to_json(orient='values')), 201
+    return jsonify(df_pred_result.to_json(orient='records')), 201
     #return jsonify(df_pred_result.to_json()), 201
     #return jsonify(json.loads(df_pred_result.to_json())), 201
