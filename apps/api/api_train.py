@@ -14,31 +14,15 @@ def api_train(machine_id, currency, train_start, train_end, test_start, test_end
     #model_list = db.session.query(Setting_model).all()
     model_list = ["reg_mva7", "reg_mva14"]
 
-    # データベースより、ATMIDのpred_startからtrainおよびtest期間のデータを読み込む
+    # データベースより、ATMIDのデータを読み込む
     SQLALCHEMY_DATABASE_URI = app.config['SQLALCHEMY_DATABASE_URI']
-    #df_train = pd.read_sql('cash', SQLALCHEMY_DATABASE_URI)
-    #print(df_train)
 
     text = "SELECT * FROM cash WHERE machine_id ='" + machine_id + "'"
-    text = text + " and date >= '" + train_start + " 00:00:00'"
-    text = text + " and date <= '" + train_end + " 00:00:00'"
-    print(text)
-    df_train = pd.read_sql_query(sql = text, con=SQLALCHEMY_DATABASE_URI)
-    df_train.drop(['id', 'machine_id'], axis=1, inplace=True)
-
-    #print(df_train)
-
-    text = "SELECT * FROM cash WHERE machine_id ='" + machine_id + "'"
-    text = text + " and date >= '" + test_start + " 00:00:00'"
-    text = text + " and date <= '" + test_end + " 00:00:00'"
-    print(text)
-    df_test = pd.read_sql_query(sql = text, con=SQLALCHEMY_DATABASE_URI)
-    df_test.drop(['id', 'machine_id'], axis=1, inplace=True)
-    #print(df_test)
-
+    df = pd.read_sql_query(sql = text, con=SQLALCHEMY_DATABASE_URI)
+    df.drop(['id', 'machine_id'], axis=1, inplace=True) # idとmachine_idを削除
 
     # 学習とベストモデルの取得
-    best_model_type, mse_train, mse_test, best_model_filename = bnp_train(model_list, df_train, df_test)
+    best_model_type, best_model_filename, mse_train, mse_test  = bnp_train(model_list, currency, train_start, train_end, test_start, test_end, df)
 
     # 結果をデータベースに保管する
     # モデルを指定されたディレクトリに保存する。
@@ -60,7 +44,6 @@ def api_train(machine_id, currency, train_start, train_end, test_start, test_end
             mse_train = mse_train,
             mse_test = mse_test,
             best_model_filename = best_model_filename,
-            #best_model = best_model,
     )
     db.session.add(train_result)
     db.session.commit()

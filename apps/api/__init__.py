@@ -3,9 +3,29 @@ from flask import Blueprint, jsonify, request
 import pandas as pd
 import json
 
+
+from flask import Flask, request, make_response, jsonify
+import os
+import werkzeug
+import base64
+from datetime import datetime
+
+
 from apps.api.api_train import api_train
 from apps.api.api_predict import api_predict
 from apps.api.api_upload import api_upload
+
+from apps.api.api_upload import api_upload2
+
+# 環境変数からデータサイズ（単位はByte）を制限する
+# limit upload file size : 1MB
+# ex) set MAX_JSON_CONTENT_LENGTH=1048576
+MAX_JSON_CONTENT_LENGTH = int(os.getenv("MAX_JSON_CONTENT_LENGTH", default="0"))
+
+# アップロードされたファイルの場所
+# ex) set UPLOAD_DIR_PATH=C:/tmp/flaskUploadDir
+UPLOAD_DIR = os.getenv("UPLOAD_DIR_PATH")
+
 
 api = Blueprint("api", __name__)
 
@@ -23,6 +43,16 @@ def upload():
     api_upload(machine_id, df_cash)
 
     return jsonify({"result": "ok"}), 201
+
+@api.post("/upload")
+def upload2():
+
+    print(request)
+
+    api_upload2()
+
+    return jsonify({"result": "ok"}), 201
+
 
 
 # 学習

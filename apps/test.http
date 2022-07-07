@@ -1,0 +1,44 @@
+
+# https://qiita.com/toshi0607/items/c4440d3fbfa72eac840c
+
+
+POST http://127.0.0.1:5000/api/train
+content-type: application/json
+
+{
+  "machine_id":"Hiro",
+  "currency":"50K", 
+  "train_start":"01/01/2021", 
+  "train_end":"10/31/2021",
+  "test_start":"11/01/2021", 
+  "test_end":"11/30/2021"
+}
+
+###
+
+POST http://127.0.0.1:5000/api/predict
+content-type: application/json
+
+{
+  "machine_id":"Hiro",
+  "currency":"50K", 
+  "pred_start":"12/01/2021", 
+  "pred_end":"12/31/2021"
+}
+
+
+###
+
+POST http://127.0.0.1:5000/api/upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="text"
+
+title
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="1.png"
+Content-Type: image/png
+
+< ./1.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
