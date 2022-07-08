@@ -9,14 +9,22 @@ Python 3.8.8rc1
 - ZIPファイルを解凍して、適当な場所にコピーする。
 - Pythonをインストールする  
 最初の画面下部のapp Python ... PATHにはチェックを入れる。Install Nowを選ぶ。
+
 - PowerShellを管理者権限で起動
 - PowerShellの実行ポリシーを変更  
 PowerShell Set-ExecutionPolicy RemoteSigned CurrentUser
+
+（コマンドプロンプトの場合）
+コマンドプロンプトを管理者権限で起動
+
 - 解凍したファイルのbismarckディレクトリにcdで移動  
 - 仮想環境を構築  
 py -m venv venv
 - 仮想環境を実行  
 venv\Scripts\Activate.ps1
+（コマンドプロンプトの場合）
+venv\Scripts\Activate.bat
+
 プロンプトの先頭に(venv) PS が追加される  
 - パッケージのインストール  
 pip install -r requirements.txt  
@@ -36,7 +44,7 @@ flask run
 http://127.0.0.1:5000/api/ を実行
 
 ### upload
-- PowerShellを管理者権限で起動
+- 別のPowerShellを管理者権限で起動
 - PowerShellの実行ポリシーを変更  
 PowerShell Set-ExecutionPolicy RemoteSigned CurrentUser
 - bismarck/testingディレクトリにcdで移動  
