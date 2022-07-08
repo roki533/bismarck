@@ -46,14 +46,12 @@ def upload():
 
 @api.post("/upload")
 def upload2():
-
     print(request)
+    machine_id  = "WS0001"
 
-    api_upload2()
+    api_upload2(machine_id, request)
 
     return jsonify({"result": "ok"}), 201
-
-
 
 # 学習
 @api.post("/train")
