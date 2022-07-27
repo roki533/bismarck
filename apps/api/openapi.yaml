@@ -1,0 +1,99 @@
+openapi: "3.0.3"
+info:
+  description: "This is a sample server BIsmarcknserver."
+  version: 1.0.0
+  title: Bismarc
+  contact:
+    email: hiroki_hara@hitachi-ch.com
+servers:
+  - url: http://127.0.0.1:5000
+    description: Test enviroment
+  
+paths:
+  /api/models/{machine_id}:
+    post:
+      summary: execute train
+      description: execute train for prediction.
+      tags: [train]
+      deprecated: false
+  
+      parameters: 
+        - name: machine_id
+          in: path
+          required: true
+          schema: 
+            type: string
+            example: "ws0001"
+  
+      responses:
+        '200':
+          description: Success opertion
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    currency: 
+                      type: string
+                      example: 50K
+                    best_model_type:
+                      type: string
+                      example: reg_mva14
+                    mse_test: 
+                      type: number
+                      format: float
+                      example: 86598.94
+                    mse_train:
+                      type: number
+                      format: float
+                      example: 65437.42
+ 
+  /api/models/{machine_id}/predict:
+    get:
+      summary: get predict result
+      description: get predict result
+      tags: [predict]
+      deprecated: false
+
+      parameters: 
+        - name: machine_id
+          in: path
+          required: true
+          schema: 
+            type: string
+            example: "ws0001"
+        - name: start_date
+          in: header
+          required: true
+          schema: 
+            type: string
+            example: "2021-11-01"
+        - name: end_date
+          in: header
+          required: true
+          schema: 
+            type: string
+            example: "2021-11-10"
+
+      responses:
+        '200':
+          description: Success opertion
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    currency: 
+                      type: string
+                      example: 50K
+                    predict: 
+                      type: array
+                      items:
+                        type: string
+                      example:
+                        - 2021-11-01
+                        - -235

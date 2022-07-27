@@ -14,11 +14,11 @@ if __name__ == "__main__":
     # ファイルの準備
     fileName = './986027.csv'
     fileDataBinary = open(fileName, 'rb').read()
-    files = {'machine_id': "ws0001", 'uploadfile': (fileName, fileDataBinary, XLSX_MIMETYPE)}
-
+    files = {'machine_id': "ws0002", 'uploadfile': (fileName, fileDataBinary, XLSX_MIMETYPE)}
+    payload = {'machine_id': "ws0002"}
     # ファイルのアップロード
     url = 'http://127.0.0.1:5000/api/upload'
-    response = requests.post(url, files=files)
+    response = requests.post(url, data=payload, files=files)
 
     print(response.status_code)
     print(response.content)

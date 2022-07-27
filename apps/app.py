@@ -3,6 +3,8 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
+from flask_cors import CORS
+
 # ----------------------------------------------------------------
 # インスタンス化する
 # ----------------------------------------------------------------
@@ -14,6 +16,13 @@ db = SQLAlchemy()           # SQL Alchemy
 
 # Flaskインスタンスを作成する
 app = Flask(__name__)
+
+# すべてのorigin、すべてのmethod（[GET, HEAD, POST, OPTIONS, PUT, PATCH, DELETE]）、
+# すべてのhttpヘッダーを許可
+CORS(
+    app,
+    supports_credentials=True
+)
 
 # config_keyにマッチする環境のコンフィグクラスを読み込む
 app.config.from_object('apps.config')
