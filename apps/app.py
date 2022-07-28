@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 
 from flask_migrate import Migrate
@@ -42,8 +43,6 @@ app.register_blueprint(api, url_prefix="/api")
 
 from apps.crud import crud
 app.register_blueprint(crud, url_prefix="/crud")
-
-
 
 
 

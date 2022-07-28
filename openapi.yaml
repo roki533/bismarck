@@ -7,14 +7,62 @@ info:
     email: hiroki_hara@hitachi-ch.com
 servers:
   - url: http://127.0.0.1:5000
-    description: Test enviroment
-  
+    description: Local enviroment
+  - url: https://bismarck-roki3.herokuapp.com/
+    description: Cloud enviroment
+
 paths:
+
+  /api/data/{machine_id}:
+    post:
+      summary: upload raw data file
+      description: upload raw data file
+      tags: [data]
+      deprecated: false
+
+      parameters: 
+        - name: machine_id
+          in: path
+          required: true
+          schema: 
+            type: string
+            example: "ws0001"
+      
+      requestBody:
+        content:
+          multipart/form-data:
+          #text/csv:
+            schema:
+              type: object
+              properties:
+                # 'file' will be the field name in this multipart request
+
+                #machine_id:
+                #  type: string
+                #  example: "ws0001"
+                file:
+                  type: string
+                  format: binary
+                  example: "cash.csv"
+                
+      responses:
+        '200':
+          description: Success opertion
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties: 
+                    result: 
+                      type: string
+                      example: OK
+
+
   /api/models/{machine_id}:
     post:
       summary: execute train
       description: execute train for prediction.
-      tags: [train]
+      tags: [models]
       deprecated: false
   
       parameters: 
@@ -54,7 +102,7 @@ paths:
     get:
       summary: get predict result
       description: get predict result
-      tags: [predict]
+      tags: [models]
       deprecated: false
 
       parameters: 
@@ -95,5 +143,10 @@ paths:
                       items:
                         type: string
                       example:
-                        - 2021-11-01
+                        - "2021-11-01"
                         - -235
+                   
+                        
+                        
+
+

@@ -1,0 +1,24 @@
+# イメージのビルド
+docker build -t bismarck ./
+
+# コンテナの起動と動作確認
+
+# Herokuにログイン
+heroku login
+
+# Herokuのコンテナにログイン
+heroku container:login
+
+# プロジェクトのディレクトリに移動
+# Herokuアプリを作る
+heroku create bismarck-roki3
+
+# Herokuコンテナにイメージをpushする
+heroku container:push web -a bismarck-roki3
+
+# Herokuコンテナからリリースする
+heroku container:release web -a bismarck-roki3
+
+# 
+heroku open -a bismarck-roki3
+

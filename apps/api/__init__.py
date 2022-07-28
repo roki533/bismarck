@@ -14,8 +14,6 @@ from apps.api.api_train import api_train
 from apps.api.api_predict import api_predict
 from apps.api.api_upload import api_upload
 
-from apps.api.api_upload import api_upload2
-
 # 環境変数からデータサイズ（単位はByte）を制限する
 # limit upload file size : 1MB
 # ex) set MAX_JSON_CONTENT_LENGTH=1048576
@@ -34,20 +32,10 @@ def index():
 #-------------------------------------------------------------------------------
 #@api.post("/upload")
 #-------------------------------------------------------------------------------
-@api.get("/upload")
-def upload():
+@api.post("/data/<machine_id>")
+def upload(machine_id):
 
-    machine_id = "Hiro"
-    df_cash = pd.DataFrame()
-
-    api_upload(machine_id, df_cash)
-
-    return jsonify({"result": "ok"}), 201
-
-@api.post("/upload")
-def upload2():
-
-    api_upload2(request)
+    api_upload(machine_id, request)
 
     return jsonify({"result": "ok"}), 201
 
