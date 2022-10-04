@@ -10,22 +10,15 @@ Python 3.8.8rc1
 - Pythonをインストールする  
 最初の画面下部のapp Python ... PATHにはチェックを入れる。Install Nowを選ぶ。
 
-- PowerShellを管理者権限で起動
-- PowerShellの実行ポリシーを変更  
-PowerShell Set-ExecutionPolicy RemoteSigned CurrentUser
-
-（コマンドプロンプトの場合）
-コマンドプロンプトを管理者権限で起動
+- コマンドプロンプトを管理者権限で起動
 
 - 解凍したファイルのbismarckディレクトリにcdで移動  
-- 仮想環境を構築  
+- 仮想環境を構築（初回のみ実施）  
 py -m venv venv
 - 仮想環境を実行  
-venv\Scripts\Activate.ps1
-（コマンドプロンプトの場合）
 venv\Scripts\Activate.bat
 
-プロンプトの先頭に(venv) PS が追加される  
+プロンプトの先頭に(venv)が追加される  
 - パッケージのインストール  
 pip install -r requirements.txt  
 少し時間がかかる
@@ -43,56 +36,29 @@ flask run
 ## 起動、動作確認
 http://127.0.0.1:5000/api/ を実行
 
-### upload
-- 別のPowerShellを管理者権限で起動
-- PowerShellの実行ポリシーを変更  
-PowerShell Set-ExecutionPolicy RemoteSigned CurrentUser
-- bismarck/testingディレクトリにcdで移動  
-- 仮想環境を構築(初回のみ)  
-py -m venv venv
-- 仮想環境を実行  
-venv\Scripts\Activate.ps1
-- pip install requests
-- python upload.py
+以下の表示が出ればOK
+```
+{
+  "run status": "running"
+}
+```
 
-### train
+## 次回以降の起動
 
-API実行
-- Talend API Tester - Free Editionをchromeにインストール  
-https://chrome.google.com/webstore/detail/talend-api-tester-free-ed/aejoelaoggembcahagimdiliamlcdmfm?hl=ja
-
-METHOD : POST  
-SCHEME : http://127.0.0.1:5000/api/train  
-BODY   :  
-{  
-  "machine_id":"Hiro",  
-  "currency":"50K",   
-  "train_start":"01/01/2021",   
-  "train_end":"10/31/2021",  
-  "test_start":"11/01/2021",   
-  "test_end":"11/30/2021"  
-}  
-
-### predict
-METHOD : POST  
-SCHEME : http://127.0.0.1:5000/api/predict  
-BODY   :  
-{  
-  "machine_id":"Hiro",  
-  "currency":"50K",   
-  "pred_start":"12/01/2021",  
-  "pred_end":"12/31/2021"  
-}  
-
-## 通常の起動
-
-- PowerShellを管理者権限で起動
-- PowerShellの実行ポリシーを変更  
-PowerShell Set-ExecutionPolicy RemoteSigned CurrentUser
+- コマンドプロンプトを管理者権限で起動
 - bismarckディレクトリにcdで移動
 - 仮想環境を実行  
-venv\Scripts\Activate.ps1　を実行する
+venv\Scripts\Activate.bat
 - flaskの実行  
 flask run
-  
-  
+
+## Open APIの環境構築
+- Swagger Editorをブラウザで起動する
+https://editor.swagger.io/
+- bismarckディレクトリにあるopenapi.yamlのコードをコピーして、wagger Editorの左に貼り付ける
+
+image.png
+- 右にWeb-APIの仕様が表示されている
+- Serversからサーバーを選んでテストを実行する
+- テストは、Try itボタンから実行できる
+

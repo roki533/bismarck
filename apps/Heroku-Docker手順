@@ -2,6 +2,10 @@
 docker build -t bismarck ./
 
 # コンテナの起動と動作確認
+docker run --name bismarck -e PORT=5000 -dit bismarck
+
+# コンテナの停止
+docker stop bismarck
 
 # Herokuにログイン
 heroku login
