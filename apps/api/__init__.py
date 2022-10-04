@@ -29,7 +29,12 @@ api = Blueprint("api", __name__)
 
 @api.get("/")
 def index():
-    return jsonify({"run status": "running"}), 201
+    return '''
+            <h1>Bismarck</h1><p>Successed setup. <BR>
+            BIsmarck is Running well!!<BR>
+            Please check the link</p>
+            <a href='https://editor.swagger.io/'>wagger Editor(Open API)</a>
+            '''
 #-------------------------------------------------------------------------------
 #@api.post("/upload")
 #-------------------------------------------------------------------------------

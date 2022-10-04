@@ -38,9 +38,12 @@ http://127.0.0.1:5000/api/ を実行
 
 以下の表示が出ればOK
 ```
-{
-  "run status": "running"
-}
+Bismarck
+Successed setup.
+BIsmarck is Running well!!
+Please check the link
+
+wagger Editor(Open API)
 ```
 
 ## 次回以降の起動
@@ -55,7 +58,9 @@ flask run
 ## Open APIの環境構築
 - Swagger Editorをブラウザで起動する
 https://editor.swagger.io/
+- サンプルのソースコードが左側に表示されていたら、すべて削除してください。
 - bismarckディレクトリにあるopenapi.yamlのコードをコピーして、wagger Editorの左に貼り付ける
+- 
 
 image.png
 - 右にWeb-APIの仕様が表示されている

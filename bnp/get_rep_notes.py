@@ -196,38 +196,3 @@ def get_rep_notes(predict_data, cash_empty_num, cash_full_num):
                 print('再調整の結果',result[currency_type])
     return result
 
-
-# テスト
-# 現金予測データ(入力データ)
-import random
-
-DAYS=30
-predict_data = [[random.randint(-1000, 1000) for i in range(DAYS)],
-                [random.randint(-1000, 1000) for i in range(DAYS)]]
-
-# カセット容量(ex.[2500, 2500] 金種毎の配列)
-cash_full_num = [CASETTE_CAP for i in range(CURRENCY_NUM)]
-
-# 切れ枚数(ex. [100, 100] 金種毎の配列)
-cash_empty_num =  [100 for i in range(CURRENCY_NUM)]
-
-rep_notes_result = get_rep_notes(predict_data, cash_empty_num, cash_full_num)
-print('最適な補充枚数', rep_notes_result)
-
-# グラフで確認
-
-cash_position = [[i[0]] for i in rep_notes_result]
-
-for i, predict in enumerate(predict_data):
-    for notes in predict:
-        cash_position[i].append(notes + cash_position[i][-1])
-
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-plt.figure(figsize=(10,7))
-sns.lineplot(data=cash_position)
-plt.hlines(0, 0, DAYS, color='g')
-plt.hlines(CASETTE_CAP, 0, DAYS, color='g')
-plt.vlines(rep_notes_result[0][1], 0, CASETTE_CAP, color='r',linestyles='dotted')
-plt.show()
