@@ -46,7 +46,7 @@ paths:
                   example: "cash.csv"
                 
       responses:
-        '200':
+        '201':
           description: Success opertion
           content:
             application/json:
@@ -83,12 +83,13 @@ paths:
                 items:
                   type: object
                   properties: 
-                    currency: 
-                      type: string
-                      example: 50K
                     best_model_type:
                       type: string
                       example: reg_mva14
+                    currency: 
+                      type: string
+                      example: 50K
+
                     mse_test: 
                       type: number
                       format: float
@@ -146,7 +147,48 @@ paths:
                         - "2021-11-01"
                         - -235
                    
-                        
-                        
 
+  /api/plan/{machine_id}/rep_notes:
+    get:
+      summary: get optimal number of notes for replenishment
+      description: get optimal number of notes for replenishment
+      tags: [plan]
+      deprecated: false
+
+      parameters: 
+        - name: machine_id
+          in: path
+          required: true
+          schema: 
+            type: string
+            example: "ws0001"
+        - name: rep_date
+          in: header
+          required: true
+          schema: 
+            type: string
+            example: "2021-11-01"
+
+      responses:
+        '200':
+          description: Success opertion
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    currency: 
+                      type: string
+                      example: 50K
+                    incident: 
+                      type: number
+                      example: 1 
+                    max_days: 
+                      type: number
+                      example: 21                           
+                    notes: 
+                      type: number
+                      example: 2700 
 

@@ -13,6 +13,7 @@ from datetime import datetime
 from apps.api.api_train import api_train
 from apps.api.api_predict import api_predict
 from apps.api.api_upload import api_upload
+from apps.api.api_rep_notes import api_rep_notes
 
 # 環境変数からデータサイズ（単位はByte）を制限する
 # limit upload file size : 1MB
@@ -61,13 +62,31 @@ def train(machine_id):
 def predict(machine_id):
 
     # ヘッダーからパラメータを取り出す
-    pred_start = request.headers.get('pred_start')
-    pred_end = request.headers.get('pred_end')
+    pred_start = request.headers.get('start_date')
+    pred_end = request.headers.get('end_date')
 
     # 予測
     predict_resp = api_predict(machine_id, pred_start, pred_end)
 
     if predict_resp != []:
         return jsonify(predict_resp), 201
+    else:
+        return jsonify({"result": "no data"}), 201
+
+
+#-------------------------------------------------------------------------------
+# 装填枚数
+#-------------------------------------------------------------------------------
+@api.get("/plan/<machine_id>/rep_notes")
+def rep_notes(machine_id):
+
+    # ヘッダーからパラメータを取り出す
+    rep_date = request.headers.get('rep_date')
+
+    # 予測
+    notes_resp = api_rep_notes(machine_id, rep_date)
+
+    if notes_resp != []:
+        return jsonify(notes_resp), 201
     else:
         return jsonify({"result": "no data"}), 201

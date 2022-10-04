@@ -21,8 +21,29 @@ def bnp_prediction(pred_start, pred_end, best_model_filename):
 
     print("BNP入力パラメータ:", pred_start, pred_end, best_model_filename)
 
+    # ランダムに指定された日付の予測データを作成する。
+    # 日付型に変換
+    from datetime import datetime, timedelta
+    start_date = datetime.strptime(pred_start, '%Y-%m-%d')
+    end_date = datetime.strptime(pred_end, '%Y-%m-%d')
+    print(start_date, end_date)
+
+    # 開始と終了の間の日数
+    days = (end_date - start_date).days + 1
+    print(days)
+    # 日付のリスト生成
+    date_list = [start_date + timedelta(days=i) for i in range(days)]
+
+    import random
+    predict = []
+    for date in date_list:
+        predict.append([date.strftime("%Y-%m-%d"),random.randint(-1000, 1000)])
+
+    df_pred_result = pd.DataFrame(predict, columns=["time", "demand"],)
+    print(df_pred_result)
+
     # ダミー戻り値
-    df_pred_result = pd.read_csv("./bnp/reg_mva14_predict_result.csv")
+    # = pd.read_csv("./bnp/reg_mva14_predict_result.csv")
 
     print("BNP出力パラメータ:", df_pred_result)
     return df_pred_result
