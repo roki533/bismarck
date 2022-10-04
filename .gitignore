@@ -2,6 +2,7 @@
 /venv/
 /migrations/
 /local.sqlite
+.pyc
 
 
 
