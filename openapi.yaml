@@ -192,3 +192,50 @@ paths:
                       type: number
                       example: 2700 
 
+  /api/plan/{machine_id}/incident:
+    get:
+      summary: get days incident will happen
+      description: get days incident will happen
+      tags: [plan]
+      deprecated: false
+
+      parameters: 
+        - name: machine_id
+          in: path
+          required: true
+          schema: 
+            type: string
+            example: "ws0001"
+        - name: pred_start
+          in: header
+          required: true
+          schema: 
+            type: string
+            example: "2021-11-01"
+        - name: cash_position
+          in: header
+          required: true
+          schema: 
+            type: number
+            example: 1000
+
+      responses:
+        '200':
+          description: Success opertion
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties: 
+                    currency: 
+                      type: string
+                      example: 50K
+                    incident: 
+                      type: number
+                      example: 1 
+                    max_days: 
+                      type: number
+                      example: 21                           
+

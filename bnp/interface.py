@@ -3,7 +3,7 @@ import pandas as pd
 # 訓練
 def bnp_train(model_list, holiday_list, currency, train_start, train_end, test_start, test_end, df):
 
-    print("BNP入力パラメータ:",model_list, holiday_list, currency, train_start, train_end, test_start, test_end, df)
+    print("BNP入力パラメータ:",model_list, holiday_list, currency, train_start, train_end, test_start, test_end, df.head(5))
 
     # ダミー戻り値
     best_model_type = "reg_mva14"
@@ -45,5 +45,5 @@ def bnp_prediction(pred_start, pred_end, best_model_filename):
     # ダミー戻り値
     # = pd.read_csv("./bnp/reg_mva14_predict_result.csv")
 
-    print("BNP出力パラメータ:", df_pred_result)
+    print("BNP出力パラメータ:", df_pred_result.head(5))
     return df_pred_result

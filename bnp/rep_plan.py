@@ -1,39 +1,10 @@
-# --------------------------------------------------------------
-# ライブラリの読み込み
-# --------------------------------------------------------------
-import pandas as pd
 
-# --------------------------------------------------------------
-# パラメータ、設定
-# --------------------------------------------------------------
-CURRENCY_NUM = 2    # 金種数        
-CASETTE_CAP = 4500  # 金種カセット容量(とりあえず金種で同じとする。)
-
-# カセット装填枚数パターン設定(ex. [[1000, 1000]] 金種毎の配列)
-START_NUM = 500     # この枚数から
-END_NUM = 4500      # この枚数まで
-STEP_NUM = 100      # この枚数刻みで、CASETTE_CAPを超えないカセットパターンを作成する
-
-RE_ADJUST = True   # 再調整
-
-
+import apps.api.settings as settings
 # --------------------------------------------------------------
 # 初期化
 # --------------------------------------------------------------
-
-# 容量オーバーチェック
-if END_NUM > CASETTE_CAP:
-    END_NUM = CASETTE_CAP
-
-if START_NUM < 0:
-    START_NUM = 0
-
-cst_patern = [[i for i in range(START_NUM, END_NUM+STEP_NUM+1, STEP_NUM)] for j in range(CURRENCY_NUM)]
-#print(cst_patern)
-# [[500, 600, 700, 800, 900, 1000, 1100,...]]
-
 # 現在のあり高(ex. [100,0 1000] 金種毎の配列)
-cur_cash_pos = [0 for i in range(CURRENCY_NUM)]
+cur_cash_pos = [0 for i in range(settings.CURRENCY_NUM)]
 #print(cur_cash_pos)
 # [0, 0]
 
@@ -42,27 +13,27 @@ NO_INCIDENT = 0
 EMPTY_INCIDENT = 1
 FULL_INCIDENT = 2
 
-# ------------------------------------------------------------------------------
-# 現金予測データより、インシデント発生までの経過日数を計算する
-# ------------------------------------------------------------------------------
-# 引数
-# init_cash_pos : 初期のあり高
-# predict[] : 現金予測データ
-
-# 戻り値
-# incident : 発生インシデント(0: なし、1: 切れ、2:あふれ)
-# max_incident_days : インシデント(切れ、あふれ)発生までの経過日数
-
-# 処理概要
-# あり高に、初期あり高をセットする
-# 現金予測データを読みだして、あり高を更新する
-# 現在あり高より、インシデント(切れ、あふれ)を発生するか判断し、発生する場合は、その経過日付を結果に追加する
-# 全部のパターンが終わったら、経過日付から最大の経過日付を取り出し、結果として返す
-# データ内でインシデントが発生しない場合は、999(最大値)を返す
-# ------------------------------------------------------------------------------
 def get_incident_days(init_cash_pos, predicts, empty_num, full_num):
-    # init_cash_pos : 初期のあり高
-    # predict[] : 現金予測データ
+    """
+    現金予測データより、インシデント発生までの経過日数を計算する
+
+    Args:
+        init_cash_pos (int): 初期のあり高
+        predict (list) : 現金予測データ
+
+    Returns:
+        incident (int) : インシデント(0:発生なし、1:切れ　2:あふれ)
+        max_incident_days : インシデント(切れ、あふれ)発生までの経過日数
+
+    Note:
+        処理概要
+        ・あり高に、初期あり高をセットする\n
+        ・現金予測データを読みだして、あり高を更新する\n
+        ・現在あり高より、インシデント(切れ、あふれ)を発生するか判断し、\n
+        　発生する場合は、その経過日付を結果に追加する\n
+        ・全部のパターンが終わったら、経過日付から最大の経過日付を取り出し、結果として返す\n
+        ・データ内でインシデントが発生しない場合は、999(最大値)を返す\n
+    """
 
     incident_days = []  # 経過日数
 
@@ -82,7 +53,7 @@ def get_incident_days(init_cash_pos, predicts, empty_num, full_num):
             incident_days = days
             break
     
-    return(incident, incident_days)
+    return incident, incident_days
 
 # ------------------------------------------------------------------------------
 # 金種により、最長の経過日数をシミュレーションで求める
@@ -103,10 +74,32 @@ def get_incident_days(init_cash_pos, predicts, empty_num, full_num):
 # すべてのパターンの処理が終わったら、最長の経過日数のパターンを最適なパターンとする
 # ------------------------------------------------------------------------------
 def get_optimal_pattern(currency_type, predicts, empty_num, full_num):
+    """
+    金種により、最長の経過日数をシミュレーションで求める
 
+    Args:
+        currency_type (str): 金種
+        predict (list) : 現金予測データ
+        empty_num (int) : 切れ枚数
+        full_num (int) : あふれ枚数
+
+    Returns:
+        best_rep_num (int) : 最適補充枚数
+        max_days : インシデント(切れ、あふれ)発生までの経過日数
+
+    Note:
+        処理概要
+        ・切れ枚数、あふれ枚数をセットする\n
+        ・現金予測データをセットする\n
+        ・カセット装填枚数パターン設定からパターンを読みだす\n
+        ・初期のあり高をカセット装填枚数パターン設定からセットする\n
+        ・現金予測データより、インシデント発生までの経過日数を計算する\n
+        ・結果をopt_resultにセットする\n
+        ・すべてのパターンの処理が終わったら、最長の経過日数のパターンを最適なパターンとする\n
+    """
     result = []
     # カセット装填枚数パターン設定からパターンを読みだす
-    for cstp, rep_num in enumerate(cst_patern[currency_type]):  
+    for cstp, rep_num in enumerate(settings.CST_PATERN[currency_type]):  
         # 現金予測データより、インシデント発生までの経過日数を計算する
         incident, incident_days = get_incident_days(rep_num, predicts, empty_num, full_num)
         # 結果をopt_resultにセットする 
@@ -153,13 +146,31 @@ def get_optimal_pattern(currency_type, predicts, empty_num, full_num):
     # 経過日数は0開始なので、+1しておく
     return [best_rep_num, max_days + 1, incident]
 
-# ------------------------------------------------------------------------------
-# 金種毎に最長の経過日数と補充枚数を求める
-# ------------------------------------------------------------------------------
-def get_rep_notes(predict_data, cash_empty_num, cash_full_num):
 
+
+def get_rep_notes(predict_data, cash_empty_num, cash_full_num):
+    """
+    金種毎に最長の経過日数と補充枚数を求める
+
+    Args:
+        predict_data (list) : 全金種の現金予測データ
+        cash_empty_num (int) : 切れ枚数
+        cash_full_num (int) : あふれ枚数
+
+    Returns:
+        result (list) : 金種毎の最適補充枚数
+
+        [[
+            int : 最適補充枚数\n
+            int : インシデント(切れ、あふれ)発生までの経過日数\n
+            int : インシデント(0:発生なし、1:切れ　2:あふれ)\n
+        ]]
+
+    Note:
+
+    """
     result = []
-    for currency_type in range(CURRENCY_NUM):
+    for currency_type in range(settings.CURRENCY_NUM):
         predicts = predict_data[currency_type]          # 現金予測データ
         empty_num = cash_empty_num[currency_type]       # 切れ枚数
         full_num = cash_full_num[currency_type]         # あふれ枚数
@@ -179,7 +190,7 @@ def get_rep_notes(predict_data, cash_empty_num, cash_full_num):
     print('短い経過日数の金種インデックス:',days_min_idx)
 
     # 再調整機能あり
-    if RE_ADJUST:
+    if settings.RE_ADJUST:
 
         # 該当インデックス以外の金種の装填枚数を再計算する
         for currency_type in range(len(result)):
@@ -194,5 +205,6 @@ def get_rep_notes(predict_data, cash_empty_num, cash_full_num):
                 print("調整金種:",currency_type)
                 result[currency_type] = get_optimal_pattern(currency_type, predicts, empty_num, full_num)
                 print('再調整の結果',result[currency_type])
+
     return result
 
