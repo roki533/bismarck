@@ -23,6 +23,5 @@ heroku container:push web -a bismarck-roki3
 # Herokuコンテナからリリースする
 heroku container:release web -a bismarck-roki3
 
-# 
-heroku open -a bismarck-roki3
+
 
